@@ -7,11 +7,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    firebase_core: ^2.24.0
-    firebase_auth: ^4.17.0
-    cloud_firestore: ^4.13.0
-    geolocator: ^9.0.2
-    google_maps_flutter: ^2.5.0
+  firebase_core: ^2.24.0
+    rebase_auth: ^4.17.0
+  cloud_firestore: ^4.13.0
+    olocator: ^9.0.2
+  google_maps_flutter: ^2.5.0
     dev_dependencies:
   flutter_test:
     sdk: flutter
