@@ -114,3 +114,6 @@ Download pre-built APK from [Releases](https://github.com/pay2hk/parent-safe-gps
 ## Support
 
 For issues and feature requests, please create an [Issue](https://github.com/pay2hk/parent-safe-gps/issues)
+
+
+<!-- Build triggered via GitHub Actions with fixed pubspec.yaml -->
