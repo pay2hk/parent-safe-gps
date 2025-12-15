@@ -1,5 +1,5 @@
 name: parent_safe_gps
-description: Parent Safe GPS - Flutter app for elderly location tracking with real-time alerts, geofencing, and SOS functionality.
+description: Parent Safe GPS - Flutter app for elderly location tracking.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,12 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: 1.24.0
-  firebase_auth: 3.11.0
-  firebase_firestore: 3.5.0
-  google_maps_flutter: ^2.5.0
-  geolocator: ^9.0.0
-  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
