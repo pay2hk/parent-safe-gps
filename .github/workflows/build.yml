@@ -4,133 +4,22 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.16.0'
-
-                - name: Regenerate Android folder
-        run: |
-          mkdir -p android/app/src/main/kotlin/com/example/parent_safe_gps
-          if [ ! -f android/build.gradle ]; then
-            cat > android/build.gradle << 'EOF'
-builds script {
-    ext.kotlin_version = '1.7.10'
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.buildDir = '../build'
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-
-subprojects {
-    project.evaluationDependsOn(':app')
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-EOF
-          fi
-          if [ ! -f android/app/build.gradle ]; then
-            cat > android/app/build.gradle << 'EOF'
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
-android {
-    namespace "com.example.parent_safe_gps"
-    compileSdkVersion flutter.compileSdkVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    defaultConfig {
-        applicationId "com.example.parent_safe_gps"
-        minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-    }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
-    }
-}
-
-flutter {
-    source = '../..'
-}
-EOF
-          fi
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --release
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
+          name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
